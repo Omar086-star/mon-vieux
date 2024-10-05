@@ -2,8 +2,7 @@
   "name": "mon-vieux-grimoire-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/Omar086-star/mon-vieux.git"
-,
+  "homepage": "https://github.com/Omar086-star/mon-vieux.git",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
@@ -19,15 +18,17 @@
     "react-router-dom": "^6.4.5",
     "react-scripts": "5.0.1",
     "serve": "^14.2.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "gh-pages": "^3.2.3" 
+
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-      "predeploy": "npm run build",
-  "deploy": "gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -53,6 +54,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.31.11",
-    "eslint-plugin-react-hooks": "^4.6.0"
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "gh-pages": "^6.1.1"
   }
 }
