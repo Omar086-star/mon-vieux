@@ -1,5 +1,5 @@
 import * as PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styles from './BookRatingForm.module.css';
@@ -19,34 +19,56 @@ function BookRatingForm({
       rating: 0,
     },
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   useEffect(() => {
     if (formState.dirtyFields.rating) {
       const rate = document.querySelector('input[name="rating"]:checked').value;
       setRating(parseInt(rate, 10));
-      formState.dirtyFields.rating = false;
     }
-  }, [formState]);
+  }, [formState, setRating]);
+
   const onSubmit = async () => {
     if (!connectedUser || !auth) {
       navigate(APP_ROUTES.SIGN_IN);
+      return;
     }
-    const update = await rateBook(id, userId, rating);
-    console.log(update);
-    if (update) {
-      // eslint-disable-next-line no-underscore-dangle
-      setBook({ ...update, id: update._id });
-    } else {
-      alert(update);
+
+    if (rating <= 0) {
+      setErrorMessage('Veuillez choisir une note avant de soumettre.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const update = await rateBook(id, userId, rating);
+      if (update) {
+        // eslint-disable-next-line no-underscore-dangle
+        setBook({ ...update, id: update._id });
+        setErrorMessage('');
+      }
+    } catch (error) {
+      setErrorMessage('Une erreur est survenue lors de la soumission.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
   return (
     <div className={styles.BookRatingForm}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <p>{rating > 0 ? 'Votre Note' : 'Notez cet ouvrage'}</p>
+        {errorMessage && <p className={styles.ErrorMessage}>{errorMessage}</p>}
         <div className={styles.Stars}>
           {!userRated ? generateStarsInputs(rating, register) : displayStars(rating)}
         </div>
-        {!userRated ? <button type="submit">Valider</button> : null}
+        {!userRated ? (
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Envoi...' : 'Valider'}
+          </button>
+        ) : null}
       </form>
     </div>
   );
