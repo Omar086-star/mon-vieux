@@ -17,8 +17,6 @@
         "react"
     ],
     "rules": {
-        "linebreak-style":0,
-            "no-alert": "off",
-    "no-console": "off"
+        "linebreak-style":0
     }
 }
